@@ -6,9 +6,11 @@ declare module '*.vue' {
   export default component
 }
 
+// Changed: Use COSMIC_ prefix to match standard Cosmic env var names
+// These are exposed client-side via Vite's envPrefix config
 interface ImportMetaEnv {
-  readonly VITE_COSMIC_BUCKET_SLUG: string
-  readonly VITE_COSMIC_READ_KEY: string
+  readonly COSMIC_BUCKET_SLUG: string
+  readonly COSMIC_READ_KEY: string
 }
 
 interface ImportMeta {

@@ -10,18 +10,21 @@ import type {
 } from '@/types'
 import { hasStatus } from '@/types'
 
+// Changed: Use COSMIC_ prefixed env vars (standard Cosmic convention)
+// These are exposed client-side via Vite's envPrefix config in vite.config.ts
+// The read key is read-only and safe for client-side use
 const cosmic = createBucketClient({
-  bucketSlug: import.meta.env.VITE_COSMIC_BUCKET_SLUG,
-  readKey: import.meta.env.VITE_COSMIC_READ_KEY,
+  bucketSlug: import.meta.env.COSMIC_BUCKET_SLUG,
+  readKey: import.meta.env.COSMIC_READ_KEY,
   apiEnvironment: 'staging'
 })
 
 export async function getPosts(): Promise<Post[]> {
   try {
     const response = await cosmic.objects
-      .find({ type: 'posts' })
-      .props(['id', 'title', 'slug', 'metadata', 'created_at'])
-      .depth(1)
+        .find({ type: 'posts' })
+        .props(['id', 'title', 'slug', 'metadata', 'created_at'])
+        .depth(1)
     return response.objects as Post[]
   } catch (error) {
     if (hasStatus(error) && error.status === 404) return []
@@ -45,9 +48,9 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 export async function getCategories(): Promise<Category[]> {
   try {
     const response = await cosmic.objects
-      .find({ type: 'categories' })
-      .props(['id', 'title', 'slug', 'metadata'])
-      .depth(1)
+        .find({ type: 'categories' })
+        .props(['id', 'title', 'slug', 'metadata'])
+        .depth(1)
     return response.objects as Category[]
   } catch (error) {
     if (hasStatus(error) && error.status === 404) return []
@@ -58,9 +61,9 @@ export async function getCategories(): Promise<Category[]> {
 export async function getAuthors(): Promise<Author[]> {
   try {
     const response = await cosmic.objects
-      .find({ type: 'authors' })
-      .props(['id', 'title', 'slug', 'metadata'])
-      .depth(1)
+        .find({ type: 'authors' })
+        .props(['id', 'title', 'slug', 'metadata'])
+        .depth(1)
     return response.objects as Author[]
   } catch (error) {
     if (hasStatus(error) && error.status === 404) return []
@@ -71,9 +74,9 @@ export async function getAuthors(): Promise<Author[]> {
 export async function getProducts(): Promise<Product[]> {
   try {
     const response = await cosmic.objects
-      .find({ type: 'products' })
-      .props(['id', 'title', 'slug', 'metadata'])
-      .depth(1)
+        .find({ type: 'products' })
+        .props(['id', 'title', 'slug', 'metadata'])
+        .depth(1)
     return response.objects as Product[]
   } catch (error) {
     if (hasStatus(error) && error.status === 404) return []
@@ -97,9 +100,9 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 export async function getCollections(): Promise<Collection[]> {
   try {
     const response = await cosmic.objects
-      .find({ type: 'collections' })
-      .props(['id', 'title', 'slug', 'metadata'])
-      .depth(1)
+        .find({ type: 'collections' })
+        .props(['id', 'title', 'slug', 'metadata'])
+        .depth(1)
     return response.objects as Collection[]
   } catch (error) {
     if (hasStatus(error) && error.status === 404) return []
@@ -123,9 +126,9 @@ export async function getCollectionBySlug(slug: string): Promise<Collection | nu
 export async function getReviews(): Promise<Review[]> {
   try {
     const response = await cosmic.objects
-      .find({ type: 'reviews' })
-      .props(['id', 'title', 'slug', 'metadata'])
-      .depth(1)
+        .find({ type: 'reviews' })
+        .props(['id', 'title', 'slug', 'metadata'])
+        .depth(1)
     return response.objects as Review[]
   } catch (error) {
     if (hasStatus(error) && error.status === 404) return []
@@ -136,9 +139,9 @@ export async function getReviews(): Promise<Review[]> {
 export async function getAboutPage(): Promise<AboutPage | null> {
   try {
     const response = await cosmic.objects
-      .find({ type: 'about-page' })
-      .props(['id', 'title', 'slug', 'metadata'])
-      .depth(1)
+        .find({ type: 'about-page' })
+        .props(['id', 'title', 'slug', 'metadata'])
+        .depth(1)
     const objects = response.objects as AboutPage[]
     if (!objects || objects.length === 0) return null
     const first = objects[0]

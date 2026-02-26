@@ -6,12 +6,15 @@ import { getAboutPage } from '@/lib/cosmic'
 
 const about = ref<AboutPage | null>(null)
 const loading = ref(true)
+const error = ref<string | null>(null)
 
 onMounted(async () => {
   try {
     about.value = await getAboutPage()
-  } catch (error) {
-    console.error('Error loading about page:', error)
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error'
+    console.error('Error loading about page:', message)
+    error.value = 'Unable to load page content. Please check your Cosmic environment variables.'
   } finally {
     loading.value = false
   }
@@ -31,6 +34,13 @@ function renderMarkdown(content: string): string {
         <div class="bg-warm-100 h-8 rounded w-3/4 animate-pulse" />
         <div class="bg-warm-100 h-4 rounded w-full animate-pulse" />
       </div>
+    </div>
+
+    <!-- Error State -->
+    <div v-else-if="error" class="text-center py-24">
+      <p class="text-5xl mb-4">⚠️</p>
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">Connection Issue</h2>
+      <p class="text-gray-500">{{ error }}</p>
     </div>
 
     <!-- No content -->
